@@ -878,6 +878,12 @@ namespace agg
                 *x += x2;
                 *y += y2;
             }
+            else if (!is_stop(m_vertices.last_command()) &&
+                     is_vertex(m_vertices.prev_vertex(&x2, &y2)))
+            {
+                *x += x2;
+                *y += y2;
+            }
         }
     }
 
