@@ -1027,6 +1027,21 @@ namespace agg
         //   Dca' = Sa.(Sca.Da + Dca.Sa - Sa.Da)/Sca + Sca.(1 - Da) + Dca.(1 - Sa)
         // 
         // Da'  = Sa + Da - Sa.Da 
+
+
+        // http://www.w3.org/TR/SVGCompositing/
+        // if Sca == 0 and Dca == Da
+        //   Dca' = Sa × Da + Sca × (1 - Da) + Dca × (1 - Sa)
+        //        = Sa × Da + Dca × (1 - Sa)
+        //        = Da = Dca
+        // otherwise if Sca == 0
+        //   Dca' = Sca × (1 - Da) + Dca × (1 - Sa)
+        //        = Dca × (1 - Sa)
+        // otherwise if Sca > 0
+        //   Dca' = Sa × Da - Sa × Da × min(1, (1 - Dca/Da) × Sa/Sca) + Sca × (1 - Da) + Dca × (1 - Sa)
+        //        = Sa × Da × (1 - min(1, (1 - Dca/Da) × Sa/Sca)) + Sca × (1 - Da) + Dca × (1 - Sa)
+
+        //   sa * da * (255 - std::min(255, (255 - p[0]/da)*(sa/(sc*sa)) +
         static AGG_INLINE void blend_pix(value_type* p, 
                                          unsigned sr, unsigned sg, unsigned sb, 
                                          unsigned sa, unsigned cover)
@@ -1056,15 +1071,15 @@ namespace agg
 
                 p[Order::R] = (value_type)(((srda + drsa <= sada) ? 
                     sr * d1a + dr * s1a :
-                    sa * (srda + drsa - sada) / sr + sr * d1a + dr * s1a + base_mask) >> base_shift);
+                   (sr > 0 ? sa * (srda + drsa - sada) / sr + sr * d1a + dr * s1a + base_mask : 0)) >> base_shift);
 
                 p[Order::G] = (value_type)(((sgda + dgsa <= sada) ? 
                     sg * d1a + dg * s1a :
-                    sa * (sgda + dgsa - sada) / sg + sg * d1a + dg * s1a + base_mask) >> base_shift);
+                   (sg > 0 ? sa * (sgda + dgsa - sada) / sg + sg * d1a + dg * s1a + base_mask : 0)) >> base_shift);
 
                 p[Order::B] = (value_type)(((sbda + dbsa <= sada) ? 
                     sb * d1a + db * s1a :
-                    sa * (sbda + dbsa - sada) / sb + sb * d1a + db * s1a + base_mask) >> base_shift);
+                   (sb > 0 ? sa * (sbda + dbsa - sada) / sb + sb * d1a + db * s1a + base_mask : 0)) >> base_shift);
 
                 p[Order::A] = (value_type)(sa + da - ((sa * da + base_mask) >> base_shift));
             }
