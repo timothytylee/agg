@@ -122,7 +122,8 @@ if test "$no_x" = "yes"; then
 fi
 AM_CONDITIONAL(ENABLE_X11,[test x$no_x = x -a xno != x$enable_platform -a x$win32_host != xyes])
 AC_SUBST(x_includes)
-AC_SUBST(x_libraries)
+test -n "$x_libraries" && X_LDFLAGS="-L$x_libraries"
+AC_SUBST(X_LDFLAGS)
 dnl ###############################################
 
 dnl Settung up library version
