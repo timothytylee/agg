@@ -216,15 +216,15 @@ namespace agg
         }
 
         // Multiply the matrix by another one and return
-        // the result in a separete matrix.
-        trans_affine operator * (const trans_affine& m)
+        // the result in a separate matrix.
+        trans_affine operator * (const trans_affine& m) const
         {
             return trans_affine(*this).multiply(m);
         }
 
         // Multiply the matrix by inverse of another one 
-        // and return the result in a separete matrix.
-        trans_affine operator / (const trans_affine& m)
+        // and return the result in a separate matrix.
+        trans_affine operator / (const trans_affine& m) const
         {
             return trans_affine(*this).multiply_inv(m);
         }
