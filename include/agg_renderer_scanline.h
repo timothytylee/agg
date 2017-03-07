@@ -156,6 +156,35 @@ namespace agg
         }
     }
 
+    //================================================render_scanline_aa_alpha
+    template<class Scanline, class BaseRenderer,
+             class SpanAllocator, class SpanGenerator>
+    void render_scanline_aa_alpha(const Scanline& sl, BaseRenderer& ren,
+                                  SpanAllocator& alloc, SpanGenerator& span_gen,
+                                  unsigned alpha)
+    {
+        int y = sl.y();
+
+        unsigned num_spans = sl.num_spans();
+        typename Scanline::const_iterator span = sl.begin();
+        for(;;)
+        {
+            int x = span->x;
+            int len = span->len;
+            const typename Scanline::cover_type* covers = span->covers;
+
+            if(len < 0) len = -len;
+            typename BaseRenderer::color_type* colors = alloc.allocate(len);
+            span_gen.generate(colors, x, y, len);
+            ren.blend_color_hspan_alpha(x, y, len, colors, alpha,
+                                  (span->len < 0) ? 0 : covers, *covers);
+
+            if(--num_spans == 0) break;
+            ++span;
+        }
+    }
+
+
     //=====================================================render_scanlines_aa
     template<class Rasterizer, class Scanline, class BaseRenderer, 
              class SpanAllocator, class SpanGenerator>
@@ -216,8 +245,50 @@ namespace agg
     };
 
 
+    //==============================================renderer_scanline_aa_alpha
+    template<class BaseRenderer, class SpanAllocator, class SpanGenerator>
+    class renderer_scanline_aa_alpha
+    {
+    public:
+        typedef BaseRenderer  base_ren_type;
+        typedef SpanAllocator alloc_type;
+        typedef SpanGenerator span_gen_type;
 
+        //--------------------------------------------------------------------
+        renderer_scanline_aa_alpha() : m_ren(0), m_alloc(0), m_span_gen(0), m_alpha(1.0) {}
+        renderer_scanline_aa_alpha(base_ren_type& ren,
+                             alloc_type& alloc,
+                             span_gen_type& span_gen,
+                             unsigned alpha) :
+            m_ren(&ren),
+            m_alloc(&alloc),
+            m_span_gen(&span_gen),
+            m_alpha(alpha)
+        {}
+        void attach(base_ren_type& ren,
+                    alloc_type& alloc,
+                    span_gen_type& span_gen)
+        {
+            m_ren = &ren;
+            m_alloc = &alloc;
+            m_span_gen = &span_gen;
+        }
 
+        //--------------------------------------------------------------------
+        void prepare() { m_span_gen->prepare(); }
+
+        //--------------------------------------------------------------------
+        template<class Scanline> void render(const Scanline& sl)
+        {
+            render_scanline_aa_alpha(sl, *m_ren, *m_alloc, *m_span_gen, m_alpha);
+        }
+
+    private:
+        base_ren_type* m_ren;
+        alloc_type*    m_alloc;
+        span_gen_type* m_span_gen;
+        unsigned       m_alpha;
+    };
 
 
     //===============================================render_scanline_bin_solid

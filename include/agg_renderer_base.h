@@ -37,6 +37,7 @@ namespace agg
     public:
         typedef PixelFormat pixfmt_type;
         typedef typename pixfmt_type::color_type color_type;
+        typedef typename pixfmt_type::color_type::value_type value_type;
         typedef typename pixfmt_type::row_data row_data;
 
         //--------------------------------------------------------------------
@@ -380,6 +381,33 @@ namespace agg
                 if(len <= 0) return;
             }
             m_ren->blend_color_hspan(x, y, len, colors, covers, cover);
+        }
+
+        //--------------------------------------------------------------------
+        void blend_color_hspan_alpha(int x, int y, int len,
+                               const color_type* colors,
+                               value_type alpha,
+                               const cover_type* covers,
+                               cover_type cover = agg::cover_full)
+        {
+            if(y > ymax()) return;
+            if(y < ymin()) return;
+
+            if(x < xmin())
+            {
+                int d = xmin() - x;
+                len -= d;
+                if(len <= 0) return;
+                if(covers) covers += d;
+                colors += d;
+                x = xmin();
+            }
+            if(x + len > xmax())
+            {
+                len = xmax() - x + 1;
+                if(len <= 0) return;
+            }
+            m_ren->blend_color_hspan_alpha(x, y, len, colors, alpha,  covers, cover);
         }
 
         //--------------------------------------------------------------------
