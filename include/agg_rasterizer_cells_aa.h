@@ -40,7 +40,8 @@
 #define AGG_RASTERIZER_CELLS_AA_INCLUDED
 
 #include <string.h>
-#include <math.h>
+#include <cstdlib>
+#include <limits>
 #include "agg_math.h"
 #include "agg_array.h"
 
@@ -333,6 +334,12 @@ namespace agg
         {
             int cx = (x1 + x2) >> 1;
             int cy = (y1 + y2) >> 1;
+
+            // Bail if values are so large they are likely to wrap
+            if ((std::abs(x1) >= std::numeric_limits<int>::max()/2) || (std::abs(y1) >= std::numeric_limits<int>::max()/2) ||
+                (std::abs(x2) >= std::numeric_limits<int>::max()/2) || (std::abs(y2) >= std::numeric_limits<int>::max()/2))
+                    return;
+
             line(x1, y1, cx, cy);
             line(cx, cy, x2, y2);
         }
