@@ -1659,7 +1659,7 @@ namespace agg
                         }
                         else
                         {
-                            while(abs(sx - lp.x1) + abs(sy - lp.y1) > lp2.len)
+                            while(abs(sx - lp.x1) + abs(sy - lp.y1) > 1 + lp2.len)
                             {
                                 sx = (lp.x1 + sx) >> 1;
                                 sy = (lp.y1 + sy) >> 1;
@@ -1726,7 +1726,7 @@ namespace agg
                         }
                         else
                         {
-                            while(abs(ex - lp.x2) + abs(ey - lp.y2) > lp2.len)
+                            while(abs(ex - lp.x2) + abs(ey - lp.y2) > 1 + lp2.len)
                             {
                                 ex = (lp.x2 + ex) >> 1;
                                 ey = (lp.y2 + ey) >> 1;
@@ -1798,7 +1798,7 @@ namespace agg
                         }
                         else
                         {
-                            while(abs(sx - lp.x1) + abs(sy - lp.y1) > lp2.len)
+                            while(abs(sx - lp.x1) + abs(sy - lp.y1) > 1 + lp2.len)
                             {
                                 sx = (lp.x1 + sx) >> 1;
                                 sy = (lp.y1 + sy) >> 1;
@@ -1811,7 +1811,7 @@ namespace agg
                         }
                         else
                         {
-                            while(abs(ex - lp.x2) + abs(ey - lp.y2) > lp2.len)
+                            while(abs(ex - lp.x2) + abs(ey - lp.y2) > 1 + lp2.len)
                             {
                                 ex = (lp.x2 + ex) >> 1;
                                 ey = (lp.y2 + ey) >> 1;
