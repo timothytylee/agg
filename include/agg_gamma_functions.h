@@ -49,6 +49,7 @@ namespace agg
 
         double operator() (double x) const
         {
+            if (x == 0.0) return 0.0;
             return pow(x, m_gamma);
         }
 
