@@ -92,6 +92,7 @@ namespace agg
     //----------------------------------------------------------------------
     struct trans_affine
     {
+        static const trans_affine identity;
         double sx, shy, shx, sy, tx, ty;
 
         //------------------------------------------ Construction

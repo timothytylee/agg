@@ -28,6 +28,7 @@
 
 namespace agg
 {
+    const trans_affine trans_affine::identity;
 
     //------------------------------------------------------------------------
     const trans_affine& trans_affine::parl_to_parl(const double* src, 
