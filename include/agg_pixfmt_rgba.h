@@ -1401,9 +1401,46 @@ namespace agg
         }
     };
 
+    //================================================comp_op_rgba_grain_merge
+    template <typename ColorT, typename Order> struct comp_op_rgba_grain_merge
+    {
+        typedef ColorT color_type;
+        typedef Order order_type;
+        typedef typename color_type::value_type value_type;
+        typedef typename color_type::calc_type calc_type;
+        typedef typename color_type::long_type long_type;
+        enum base_scale_e
+        {
+            base_shift = color_type::base_shift,
+            base_mask  = color_type::base_mask
+        };
 
+        // E = I + M - 128
+        static AGG_INLINE void blend_pix(value_type* p,
+                                         unsigned sr, unsigned sg, unsigned sb,
+                                         unsigned sa, unsigned cover)
+        {
 
-
+            if(cover < 255)
+            {
+                sr = (sr * cover + 255) >> 8;
+                sg = (sg * cover + 255) >> 8;
+                sb = (sb * cover + 255) >> 8;
+                sa = (sa * cover + 255) >> 8;
+            }
+            if(sa)
+            {
+                calc_type da = p[Order::A];
+                int dr = sr + p[Order::R] - 128;
+                int dg = sg + p[Order::G] - 128;
+                int db = sb + p[Order::B] - 128;
+                p[Order::R] = (value_type)(dr < 0 ? 0 : (dr > 255 ? 255 : dr));
+                p[Order::G] = (value_type)(dg < 0 ? 0 : (dg > 255 ? 255 : dg));
+                p[Order::B] = (value_type)(db < 0 ? 0 : (db > 255 ? 255 : db));
+                p[Order::A] = (value_type)(sa + da - ((sa * da + base_mask) >> base_shift));
+            }
+        }
+    };
 
     //======================================================comp_op_table_rgba
     template<class ColorT, class Order> struct comp_op_table_rgba
@@ -1451,6 +1488,7 @@ namespace agg
         comp_op_rgba_contrast   <ColorT,Order>::blend_pix,
         comp_op_rgba_invert     <ColorT,Order>::blend_pix,
         comp_op_rgba_invert_rgb <ColorT,Order>::blend_pix,
+        comp_op_rgba_grain_merge<ColorT,Order>::blend_pix,
         0
     };
 
@@ -1486,6 +1524,7 @@ namespace agg
         comp_op_contrast,      //----comp_op_contrast
         comp_op_invert,        //----comp_op_invert
         comp_op_invert_rgb,    //----comp_op_invert_rgb
+        comp_op_grain_merge,   //----comp_op_grain_merge
 
         end_of_comp_op_e
     };
@@ -2908,4 +2947,3 @@ namespace agg
 }
 
 #endif
-
