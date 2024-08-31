@@ -102,6 +102,13 @@ namespace agg
 #endif
 #endif
 
+//--------------------------------- Decorator for switch statement fall-through
+#if __cplusplus >= 201703L
+#define AGG_FALLTHROUGH [[fallthrough]];
+#else
+#define AGG_FALLTHROUGH ;
+#endif
+
 //------------------------------------------------ Some fixes for MS Visual C++
 #if defined(_MSC_VER)
 #pragma warning(disable:4786) // Identifier was truncated...
@@ -446,8 +453,8 @@ namespace agg
     //----------------------------------------------------------------is_close
     inline bool is_close(unsigned c)
     {
-        return (c & ~(path_flags_cw | path_flags_ccw)) ==
-               (path_cmd_end_poly | path_flags_close); 
+        return (c & ~(+path_flags_cw | path_flags_ccw)) ==
+               (+path_cmd_end_poly | path_flags_close); 
     }
 
     //------------------------------------------------------------is_next_poly
@@ -471,7 +478,7 @@ namespace agg
     //-------------------------------------------------------------is_oriented
     inline bool is_oriented(unsigned c)
     {
-        return (c & (path_flags_cw | path_flags_ccw)) != 0; 
+        return (c & (+path_flags_cw | path_flags_ccw)) != 0; 
     }
 
     //---------------------------------------------------------------is_closed
@@ -489,13 +496,13 @@ namespace agg
     //-------------------------------------------------------clear_orientation
     inline unsigned clear_orientation(unsigned c)
     {
-        return c & ~(path_flags_cw | path_flags_ccw);
+        return c & ~(+path_flags_cw | path_flags_ccw);
     }
 
     //---------------------------------------------------------get_orientation
     inline unsigned get_orientation(unsigned c)
     {
-        return c & (path_flags_cw | path_flags_ccw);
+        return c & (+path_flags_cw | path_flags_ccw);
     }
 
     //---------------------------------------------------------set_orientation
