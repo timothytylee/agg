@@ -326,6 +326,12 @@ namespace agg
         {
             int cx = (int)(((long long)x1 + (long long)x2) >> 1);
             int cy = (int)(((long long)y1 + (long long)y2) >> 1);
+
+            // Abort if values are so large they are likely to wrap
+            if ((std::abs(x1) >= std::numeric_limits<int>::max()/2) || (std::abs(y1) >= std::numeric_limits<int>::max()/2) ||
+                (std::abs(x2) >= std::numeric_limits<int>::max()/2) || (std::abs(y2) >= std::numeric_limits<int>::max()/2))
+                    return;
+
             line(x1, y1, cx, cy);
             line(cx, cy, x2, y2);
         }
