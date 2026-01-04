@@ -1650,7 +1650,7 @@ namespace agg
                         }
                         else
                         {
-                            while(std::abs(sx - lp.x1) + std::abs(sy - lp.y1) > lp2.len)
+                            while(std::abs(sx - lp.x1) + std::abs(sy - lp.y1) > 1 + lp2.len)
                             {
                                 sx = (lp.x1 + sx) >> 1;
                                 sy = (lp.y1 + sy) >> 1;
@@ -1717,7 +1717,7 @@ namespace agg
                         }
                         else
                         {
-                            while(std::abs(ex - lp.x2) + std::abs(ey - lp.y2) > lp2.len)
+                            while(std::abs(ex - lp.x2) + std::abs(ey - lp.y2) > 1 + lp2.len)
                             {
                                 ex = (lp.x2 + ex) >> 1;
                                 ey = (lp.y2 + ey) >> 1;
@@ -1789,7 +1789,7 @@ namespace agg
                         }
                         else
                         {
-                            while(std::abs(sx - lp.x1) + std::abs(sy - lp.y1) > lp2.len)
+                            while(std::abs(sx - lp.x1) + std::abs(sy - lp.y1) > 1 + lp2.len)
                             {
                                 sx = (lp.x1 + sx) >> 1;
                                 sy = (lp.y1 + sy) >> 1;
@@ -1802,7 +1802,7 @@ namespace agg
                         }
                         else
                         {
-                            while(std::abs(ex - lp.x2) + std::abs(ey - lp.y2) > lp2.len)
+                            while(std::abs(ex - lp.x2) + std::abs(ey - lp.y2) > 1 + lp2.len)
                             {
                                 ex = (lp.x2 + ex) >> 1;
                                 ey = (lp.y2 + ey) >> 1;
