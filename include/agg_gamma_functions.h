@@ -84,7 +84,11 @@ namespace agg
         {
             if(x < m_start) return 0.0;
             if(x > m_end) return 1.0;
-            return (x - m_start) / (m_end - m_start);
+            // avoid nan from potential zero division
+            // https://github.com/mapnik/mapnik/issues/761
+            double delta = m_end - m_start;
+            if (delta <= 0.0) return 0.0;
+            return (x - m_start) / delta;
         }
 
     private:
