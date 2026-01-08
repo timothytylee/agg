@@ -557,7 +557,7 @@ namespace agg
                         num_spans = sl_bin.num_spans();
                         for(;;)
                         {
-                            std::memset(mix_buffer + span_bin->x - min_x, 
+                            std::memset(static_cast<void*>(mix_buffer + span_bin->x - min_x),
                                    0, 
                                    span_bin->len * sizeof(color_type));
 
@@ -740,11 +740,11 @@ namespace agg
 
                     if(sl_len)
                     {
-                        std::memset(mix_buffer + sl_start - min_x, 
+                        std::memset(static_cast<void*>(mix_buffer + sl_start - min_x),
                                0, 
                                sl_len * sizeof(color_type));
 
-                        std::memset(cover_buffer + sl_start - min_x, 
+                        std::memset(static_cast<void*>(cover_buffer + sl_start - min_x),
                                0, 
                                sl_len * sizeof(cover_type));
 

@@ -79,12 +79,12 @@ namespace agg
 
 	public:
 		gradient_image() :
-			m_color_function(),
 			m_buffer(NULL),
 			m_alocdx(0),
 			m_alocdy(0),
 			m_width(0),
-			m_height(0)
+			m_height(0),
+			m_color_function()
 		{
 			m_color = m_color_function[0 ];
 		}
@@ -125,7 +125,7 @@ namespace agg
 				for (int rows = 0; rows < height; rows++)
 				{
 					agg::rgba8* row = &m_buffer[rows * m_alocdx ];
-					std::memset(row ,0 ,m_width * 4 );
+					std::memset(static_cast<void*>(row) ,0 ,m_width * 4 );
 				};
 
 				result = m_buffer;
