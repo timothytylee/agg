@@ -24,7 +24,7 @@
     $ENV{PATH}
 
     NO_DEFAULT_PATH 
-    DOC "WXART2D_DIR found"]
+    DOC "WXART2D_DIR found"
     
     # Help the user find it if we cannot.
     DOC "The Agg bin dir"

@@ -1,3 +1,5 @@
+CMAKE_MINIMUM_REQUIRED( VERSION 3.10 )
+
 PROJECT( MyAggApp )
 
 #modify this!!
@@ -5,8 +7,6 @@ SET( AGG_DIR ${antigrain_BINARY_DIR} )
 
 # additional are modified Find routines
 SET ( CMAKE_MODULE_PATH "${MyAggApp_BINARY_DIR}" )
-
-CMAKE_MINIMUM_REQUIRED( VERSION 2.4.8 )
 
 # for the moment this decides the platform code.
 IF(WIN32)

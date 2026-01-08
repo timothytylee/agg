@@ -185,6 +185,8 @@ ADD_LIBRARY( controls
     ${controls_HEADERS}
 )
 
+TARGET_LINK_LIBRARIES( controls antigrain )
+
 #freetype library
 
 IF ( agg_USE_FREETYPE )
@@ -215,6 +217,7 @@ IF(WIN32)
 		
 		${platform_HEADERS}		
     )
+    TARGET_LINK_LIBRARIES( platform antigrain )
 	INSTALL( FILES ../font_win32_tt/agg_font_win32_tt.h DESTINATION agg/font_win32_tt )	
 ENDIF(WIN32)
 IF(UNIX)
@@ -223,6 +226,7 @@ IF(UNIX)
 
 		${platform_HEADERS}		
     )
+    TARGET_LINK_LIBRARIES( platform antigrain )
 ENDIF(UNIX)
 IF(APPLE)
     ADD_LIBRARY( platform
@@ -231,6 +235,7 @@ IF(APPLE)
 
 		${platform_HEADERS}		
     )
+    TARGET_LINK_LIBRARIES( platform antigrain )
 ENDIF(APPLE)
 
 IF( SDL_FOUND AND agg_USE_SDL_PLATFORM )
@@ -239,6 +244,7 @@ IF( SDL_FOUND AND agg_USE_SDL_PLATFORM )
 		
 		${platform_HEADERS}		
     )
+    TARGET_LINK_LIBRARIES( sdlplatform antigrain )
     INSTALL( TARGETS sdlplatform DESTINATION lib )
     SET_TARGET_PROPERTIES( sdlplatform  PROPERTIES OUTPUT_NAME aggsdlplatform${PFDEBUG} )
 ENDIF( SDL_FOUND AND agg_USE_SDL_PLATFORM )
