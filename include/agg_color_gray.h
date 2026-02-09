@@ -147,6 +147,16 @@ namespace agg
         }
 
         //--------------------------------------------------------------------
+        operator rgba() const
+        {
+            return rgba(
+                v / (double)base_mask,
+                v / (double)base_mask,
+                v / (double)base_mask,
+                a / (double)base_mask);
+        }
+
+        //--------------------------------------------------------------------
         rgba8 make_rgba8(const linear&) const 
         {
             return rgba8(v, v, v, a);
@@ -500,6 +510,16 @@ namespace agg
         gray16(const sgray8& c) :
             v(sRGB_conv<value_type>::rgb_from_sRGB(c.v)),
             a(sRGB_conv<value_type>::alpha_from_sRGB(c.a)) {}
+
+        //--------------------------------------------------------------------
+        operator rgba() const
+        {
+            return rgba(
+                v / (double)base_mask,
+                v / (double)base_mask,
+                v / (double)base_mask,
+                a / (double)base_mask);
+        }
 
         //--------------------------------------------------------------------
         operator rgba8() const 
